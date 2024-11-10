@@ -1,0 +1,1 @@
+print("tao là đứa đẹp nhất thế giới")
