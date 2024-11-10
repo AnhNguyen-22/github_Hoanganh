@@ -1,0 +1,1 @@
+print("Tepiu xink gai vcl")
