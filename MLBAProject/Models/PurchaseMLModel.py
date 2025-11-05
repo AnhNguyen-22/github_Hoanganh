@@ -3,7 +3,7 @@ from sklearn.preprocessing import LabelEncoder
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from MLBAProject.Models.PurchaseStatistic import PurchaseStatistic
+from Models.PurchaseStatistic import PurchaseStatistic
 
 
 class PurchaseMLModel(PurchaseStatistic):

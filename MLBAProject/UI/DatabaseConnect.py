@@ -7,6 +7,9 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from pathlib import Path
+
+IMAGES_DIR = Path(__file__).resolve().parents[1] / "Images"
 
 
 class Ui_MainWindow(object):
@@ -14,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(359, 333)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:/Users/Hoang Anh\Downloads\01_Study\stu_7th_semester_nam3\02_MachineLearning\05_projects\github_Hoanganh\MLBAProject\Images\avata.jpeg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap(str(IMAGES_DIR / "avata.jpeg")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -55,13 +58,13 @@ class Ui_MainWindow(object):
         self.pushButtonConnect = QtWidgets.QPushButton(parent=self.groupBox)
         self.pushButtonConnect.setGeometry(QtCore.QRect(40, 220, 111, 31))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("C:/Users/Hoang Anh\Downloads\01_Study\stu_7th_semester_nam3\02_MachineLearning\05_projects\github_Hoanganh\MLBAProject\Images\settings.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap(str(IMAGES_DIR / "settings.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButtonConnect.setIcon(icon1)
         self.pushButtonConnect.setObjectName("pushButtonConnect")
         self.pushButtonClose = QtWidgets.QPushButton(parent=self.groupBox)
         self.pushButtonClose.setGeometry(QtCore.QRect(190, 220, 101, 31))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("C:/Users/Hoang Anh\Downloads\01_Study\stu_7th_semester_nam3\02_MachineLearning\05_projects\github_Hoanganh\MLBAProject\Images\close.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon2.addPixmap(QtGui.QPixmap(str(IMAGES_DIR / "close.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButtonClose.setIcon(icon2)
         self.pushButtonClose.setObjectName("pushButtonClose")
         MainWindow.setCentralWidget(self.centralwidget)

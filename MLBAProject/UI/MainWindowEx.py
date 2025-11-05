@@ -4,20 +4,22 @@ import plotly.graph_objects as go
 
 from PyQt6 import QtGui, QtCore
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QAction, QIcon, QPixmap
+from PyQt6.QtGui import QAction, QIcon, QPixmap, QIntValidator
 from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QMainWindow, QDialog, QComboBox, QPushButton, QCheckBox, \
     QListWidgetItem, QFileDialog
+from pathlib import Path
+from datetime import datetime
 from matplotlib import pyplot as plt
 import seaborn as sns
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
-from MLBAProject.Connectors.Connector import Connector
-from MLBAProject.Models.PurchaseLinearRegression import PurchaseLinearRegression
-from MLBAProject.Models.PurchaseStatistic import PurchaseStatistic
-from MLBAProject.UI.ChartHandle import ChartHandle
-from MLBAProject.UI.DatabaseConnectEx import DatabaseConnectEx
-from MLBAProject.UI.MainWindow import Ui_MainWindow
+from Connectors.Connector import Connector
+from Models.PurchaseLinearRegression import PurchaseLinearRegression
+from Models.PurchaseStatistic import PurchaseStatistic
+from UI.ChartHandle import ChartHandle
+from UI.DatabaseConnectEx import DatabaseConnectEx
+from UI.MainWindow import Ui_MainWindow
 import traceback
 
 
@@ -42,6 +44,16 @@ class MainWindowEx(Ui_MainWindow):
         self.MainWindow=MainWindow
         self.verticalLayoutFunctions.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setupPlot()
+
+        # Chỉ cho phép nhập số cho các ô tuổi
+        try:
+            age_validator = QIntValidator(0, 120, self.MainWindow)
+            self.lineEditAge.setValidator(age_validator)
+            self.lineEditFromAge.setValidator(QIntValidator(0, 120, self.MainWindow))
+            self.lineEditToAge.setValidator(QIntValidator(0, 120, self.MainWindow))
+        except Exception:
+            # Nếu UI thay đổi tên biến, tránh làm app crash
+            pass
 
         self.actionConnection.triggered.connect(self.openDatabaseConnectUI)
 
@@ -293,21 +305,36 @@ class MainWindowEx(Ui_MainWindow):
         self.lineEditRMSE.setText(str(result.RMSE))
         self.lineEditR2SCore.setText(str(result.R2_SCORE))
     def processPickSavePath(self):
-        filters = "trained model file (*.zip);;All files(*)"
+        # Gợi ý thư mục lưu mặc định: MLBAProject/Assets
+        assets_dir = Path(__file__).resolve().parents[1] / "Assets"
+        assets_dir.mkdir(parents=True, exist_ok=True)
+        default_name = f"trained_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pkl"
+        default_path = assets_dir / default_name
+        filters = "Pickle model (*.pkl);;All files(*)"
         filename, selected_filter = QFileDialog.getSaveFileName(
             self.MainWindow,
+            directory=str(default_path),
             filter=filters,
         )
         self.lineEditPath.setText(filename)
     def processSaveTrainedModel(self):
-        trainedModelPath=self.lineEditPath.text()
+        trainedModelPath=self.lineEditPath.text().strip()
         if trainedModelPath=="":
             return
-        ret = self.purchaseLinearRegression.saveModel(trainedModelPath)
+        # Đảm bảo có phần mở rộng .pkl và thư mục tồn tại
+        path_obj = Path(trainedModelPath)
+        if path_obj.suffix == "":
+            path_obj = path_obj.with_suffix(".pkl")
+        path_obj.parent.mkdir(parents=True, exist_ok=True)
+        ret = self.purchaseLinearRegression.saveModel(str(path_obj))
         dlg = QMessageBox(self.MainWindow)
         dlg.setWindowTitle("Info")
-        dlg.setIcon(QMessageBox.Icon.Information)
-        dlg.setText(f"Saved Trained machine learning model successful at [{trainedModelPath}]!")
+        if ret:
+            dlg.setIcon(QMessageBox.Icon.Information)
+            dlg.setText(f"Saved trained model to: {path_obj}")
+        else:
+            dlg.setIcon(QMessageBox.Icon.Critical)
+            dlg.setText(f"Failed to save model to: {path_obj}")
         buttons = QMessageBox.StandardButton.Yes
         dlg.setStandardButtons(buttons)
         button = dlg.exec()
@@ -330,11 +357,43 @@ class MainWindowEx(Ui_MainWindow):
         dlg.setStandardButtons(buttons)
         button = dlg.exec()
     def processPrediction(self):
-        gender = self.lineEditGender.text()
-        age = int(self.lineEditAge.text())
-        payment = self.lineEditPaymentMethod.text()
-        if len(self.purchaseLinearRegression.trainedmodel.columns_input)==3:
-            predicted_price = self.purchaseLinearRegression.predictPriceFromGenderAndAgeAndPayment(gender, age, payment)
-        else:
-            predicted_price = self.purchaseLinearRegression.predictPriceFromGenderAndAge(gender, age)
-        self.lineEditPredictedPrice.setText(str(predicted_price[0]))
+        try:
+            if getattr(self.purchaseLinearRegression, "trainedmodel", None) is None:
+                dlg = QMessageBox(self.MainWindow)
+                dlg.setWindowTitle("Error")
+                dlg.setIcon(QMessageBox.Icon.Critical)
+                dlg.setText("Model chưa được train hoặc load.")
+                dlg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                dlg.exec()
+                return
+
+            gender = self.lineEditGender.text().strip()
+            payment = self.lineEditPaymentMethod.text().strip()
+            try:
+                age = int(self.lineEditAge.text())
+            except Exception:
+                dlg = QMessageBox(self.MainWindow)
+                dlg.setWindowTitle("Error")
+                dlg.setIcon(QMessageBox.Icon.Critical)
+                dlg.setText("Age phải là số nguyên hợp lệ.")
+                dlg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                dlg.exec()
+                return
+
+            if len(self.purchaseLinearRegression.trainedmodel.columns_input) == 3:
+                predicted_price = self.purchaseLinearRegression.predictPriceFromGenderAndAgeAndPayment(
+                    gender, age, payment
+                )
+            else:
+                predicted_price = self.purchaseLinearRegression.predictPriceFromGenderAndAge(
+                    gender, age
+                )
+            self.lineEditPredictedPrice.setText(str(float(predicted_price[0])))
+        except Exception:
+            traceback.print_exc()
+            dlg = QMessageBox(self.MainWindow)
+            dlg.setWindowTitle("Error")
+            dlg.setIcon(QMessageBox.Icon.Critical)
+            dlg.setText("Đã xảy ra lỗi khi dự đoán. Vui lòng kiểm tra lại dữ liệu nhập hoặc mô hình đã load.")
+            dlg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            dlg.exec()

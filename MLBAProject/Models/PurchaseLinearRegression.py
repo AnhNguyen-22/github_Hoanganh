@@ -7,10 +7,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error,r2_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-from MLBAProject.Models.MetricsResult import MetricsResult
-from MLBAProject.Models.PurchaseMLModel import PurchaseMLModel
-from MLBAProject.Models.TrainedModel import TrainedModel
-from MLBAProject.Utils.FileUtils import FileUtil
+from Models.MetricsResult import MetricsResult
+from Models.PurchaseMLModel import PurchaseMLModel
+from Models.TrainedModel import TrainedModel
+from Utils.FileUtils import FileUtil
 
 class PurchaseLinearRegression(PurchaseMLModel):
     def __init__(self,connector=None):

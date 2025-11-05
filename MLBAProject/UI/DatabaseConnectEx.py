@@ -3,8 +3,8 @@ import traceback
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMessageBox
 
-from MLBAProject.Connectors.Connector import Connector
-from MLBAProject.UI.DatabaseConnect import Ui_MainWindow
+from Connectors.Connector import Connector
+from UI.DatabaseConnect import Ui_MainWindow
 
 
 class DatabaseConnectEx(Ui_MainWindow):
