@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Retail Analytics &amp; Machine Learning App</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_0">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+
+      <!-- ===================== TAB 0: CRUD EMPLOYEE ===================== -->
+      <widget class="QWidget" name="tabEmployee">
+       <attribute name="title">
+        <string>👥 CRUD Employee</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_employee">
+        <!-- Left panel: Form -->
+        <item>
+         <widget class="QGroupBox" name="groupEmployeeForm">
+          <property name="title">
+           <string>Employee Information</string>
+          </property>
+          <layout class="QFormLayout" name="formLayoutEmployee">
+           <item row="0" column="0"><widget class="QLabel"><property name="text"><string>Employee ID:</string></property></widget></item>
+           <item row="0" column="1"><widget class="QLineEdit" name="txtEmployeeID"><property name="enabled"><bool>false</bool></property><property name="placeholderText"><string>Auto-generated</string></property></widget></item>
+           <item row="1" column="0"><widget class="QLabel"><property name="text"><string>Name:</string></property></widget></item>
+           <item row="1" column="1"><widget class="QLineEdit" name="txtEmployeeName"><property name="placeholderText"><string>Nhập tên</string></property></widget></item>
+           <item row="2" column="0"><widget class="QLabel"><property name="text"><string>Email:</string></property></widget></item>
+           <item row="2" column="1"><widget class="QLineEdit" name="txtEmployeeEmail"><property name="placeholderText"><string>Nhập email</string></property></widget></item>
+           <item row="3" column="0"><widget class="QLabel"><property name="text"><string>Password:</string></property></widget></item>
+           <item row="3" column="1"><widget class="QLineEdit" name="txtEmployeePassword"><property name="echoMode"><enum>QLineEdit::Password</enum></property><property name="placeholderText"><string>Nhập mật khẩu</string></property></widget></item>
+           <item row="4" column="0"><widget class="QLabel"><property name="text"><string>Role:</string></property></widget></item>
+           <item row="4" column="1"><widget class="QComboBox" name="cboEmployeeRole"><item><property name="text"><string>admin</string></property></item><item><property name="text"><string>technical</string></property></item><item><property name="text"><string>reporter</string></property></item></widget></item>
+           <item row="5" column="0"><widget class="QPushButton" name="btnEmployeeCreate"><property name="text"><string>Create</string></property></widget></item>
+           <item row="5" column="1"><widget class="QPushButton" name="btnEmployeeUpdate"><property name="text"><string>Update</string></property></widget></item>
+           <item row="6" column="0"><widget class="QPushButton" name="btnEmployeeDelete"><property name="text"><string>Delete</string></property></widget></item>
+           <item row="6" column="1"><widget class="QPushButton" name="btnEmployeeClear"><property name="text"><string>Clear</string></property></widget></item>
+          </layout>
+         </widget>
+        </item>
+        <!-- Right panel: Table -->
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_employeeRight">
+          <item><widget class="QLabel" name="lblEmployeeTitle"><property name="text"><string>Employee List</string></property><property name="alignment"><set>Qt::AlignHCenter|Qt::AlignVCenter</set></property></widget></item>
+          <item><widget class="QTableWidget" name="tableEmployee"><property name="minimumSize"><size><width>600</width><height>400</height></size></property></widget></item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+
+      <!-- ===================== TAB 1: STATISTICS ===================== -->
+      <widget class="QWidget" name="tabStatistics">
+       <attribute name="title">
+        <string>📊 Statistics</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_tab1">
+        <!-- Left panel -->
+        <item>
+         <widget class="QGroupBox" name="groupStatFunctions">
+          <property name="title">
+           <string>Functions</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_statLeft">
+           <item><widget class="QLabel"><property name="text"><string>📊 Phần thống kê</string></property><property name="styleSheet"><string>font-weight: bold; font-size: 12pt;</string></property></widget></item>
+           <item><widget class="QPushButton" name="btnMaxInvoiceNo"><property name="text"><string>InvoiceNo lớn nhất</string></property></widget></item>
+           <item><widget class="QPushButton" name="btnTopNCustomers"><property name="text"><string>TOP N CustomerID</string></property></widget></item>
+           <item><widget class="QPushButton" name="btnOrdersByYearCountry"><property name="text"><string>Phân bố đơn hàng theo năm/quốc gia</string></property></widget></item>
+           <item><spacer name="verticalSpacer1"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property></spacer></item>
+          </layout>
+         </widget>
+        </item>
+
+        <!-- Right panel -->
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_statRight">
+          <item><widget class="QLabel" name="lblChartTitle"><property name="text"><string>Chart Visualization</string></property><property name="alignment"><set>Qt::AlignHCenter|Qt::AlignVCenter</set></property></widget></item>
+          <item><widget class="QFrame" name="chartFrame"><property name="frameShape"><enum>QFrame::StyledPanel</enum></property><property name="minimumSize"><size><width>600</width><height>400</height></size></property></widget></item>
+          <item><widget class="QTableWidget" name="tableStats"><property name="minimumSize"><size><width>600</width><height>150</height></size></property></widget></item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+
+      <!-- ===================== TAB 2: MACHINE LEARNING ===================== -->
+      <widget class="QWidget" name="tabML">
+       <attribute name="title">
+        <string>🤖 Machine Learning</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_tab2">
+        <!-- Left panel: Controls -->
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_mlLeft">
+          <!-- GROUP 1: CLUSTERING -->
+          <item>
+           <widget class="QGroupBox" name="groupCluster">
+            <property name="title">
+             <string>Customer Clustering (K-Means)</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_cluster">
+             <item>
+              <layout class="QFormLayout" name="formCluster">
+               <item row="0" column="0"><widget class="QLabel"><property name="text"><string>Number of Clusters (k):</string></property></widget></item>
+               <item row="0" column="1"><widget class="QSpinBox" name="spinK"><property name="minimum"><number>2</number></property><property name="maximum"><number>10</number></property><property name="value"><number>3</number></property><property name="singleStep"><number>1</number></property><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property></widget></item>
+               <item row="1" column="0"><widget class="QPushButton" name="btnShowElbow"><property name="text"><string>Hiển thị Elbow Method</string></property></widget></item>
+               <item row="1" column="1"><widget class="QPushButton" name="btnClusterTrain"><property name="text"><string>Train K-Means</string></property></widget></item>
+               <item row="2" column="0"><widget class="QPushButton" name="btnClusterVisual"><property name="text"><string>Visualize Clusters</string></property></widget></item>
+               <item row="3" column="0"><widget class="QLabel"><property name="text"><string>Cluster ID:</string></property></widget></item>
+               <item row="3" column="1"><widget class="QSpinBox" name="spinClusterID"><property name="minimum"><number>0</number></property><property name="maximum"><number>9</number></property><property name="value"><number>0</number></property><property name="singleStep"><number>1</number></property><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property></widget></item>
+               <item row="4" column="0"><widget class="QPushButton" name="btnGetCustomersByCluster"><property name="text"><string>Lấy Customers theo Cluster</string></property></widget></item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+
+          <item><spacer name="verticalSpacer2"><property name="orientation"><enum>Qt::Vertical</enum></property></spacer></item>
+         </layout>
+        </item>
+
+        <!-- Right panel: Chart and Table -->
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_mlRight">
+          <item><widget class="QLabel" name="lblChartTitleML"><property name="text"><string>Chart &amp; Data Visualization</string></property><property name="alignment"><set>Qt::AlignHCenter|Qt::AlignVCenter</set></property></widget></item>
+          <item><widget class="QFrame" name="chartFrameML"><property name="frameShape"><enum>QFrame::StyledPanel</enum></property><property name="minimumSize"><size><width>600</width><height>400</height></size></property></widget></item>
+          <item><widget class="QTableWidget" name="tableML"><property name="minimumSize"><size><width>600</width><height>150</height></size></property></widget></item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
